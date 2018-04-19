@@ -1,0 +1,4 @@
+*.pyc
+Twaster/Twaster/settings.py
+Twaster/TweetUtils/tweets.py
+Twaster/db.sqlite3
