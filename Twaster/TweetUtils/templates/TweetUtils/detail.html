@@ -1,0 +1,153 @@
+<!-- Extends base.html -->
+{% extends 'TweetUtils/base.html'%}
+
+<!-- Static files -->
+{% load staticfiles %}
+
+<!-- css links block -->
+{% block cssLinks %}
+
+<link rel="stylesheet" href="{% static 'css/detail.css' %}">
+
+<!-- end cssLinks block -->
+{% endblock cssLinks %}
+
+<!-- Body block -->
+{% block body %}
+
+<div class="container">
+    <h3>{{ disaster }}</h3>
+</div>
+<input id="pac-input" class="controls" type="text" placeholder="Enter a city name">
+<div class="container" id="map" style="max-height: 692px">
+
+</div>
+<div style="margin-top:20px" class="col-md-12 text-center">
+    <button style="height:50px; width:250px" onclick="followlocation()" type="button" class="btn btn-primary"><h4>Follow location</h4></button>
+</div>
+
+
+<div class="container" style="min-height: 658px">
+    <table id="locationtable" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>City</th>
+                <th>Country</th>
+                <th style="width:100px"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for loc in locations %}
+            <tr id={{loc.id}}>
+                <td>{{loc.City}}</td>
+                <td>{{loc.Country}}</td>
+                <td><button onclick="deletecity('{{ loc.id }}')" type="button" class="btn btn-primary">Delete City</button></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+        </tfoot>
+    </table>
+</div>
+
+<!-- end body block -->
+{% endblock body %}
+
+<!-- scrpits block -->
+{% block scripts %}
+<script>
+    function deleteRow(rowid) {
+        var row = document.getElementById(rowid);
+        var table = row.parentNode;
+        while (table && table.tagName != 'TABLE')
+            table = table.parentNode;
+        if (!table)
+            return;
+        table.deleteRow(row.rowIndex);
+    }
+
+    function deletecity(cityid) {
+
+        var city_id = cityid;
+
+        $.ajax({
+            type: "POST",
+            url: '/TweetUtils/deletecity/',
+            dataType: "json",
+            async: false,
+            data: {
+                'city_id': city_id
+            },
+            success: function(response) {
+                debugger;
+                console.log('successfull ajax call of city deletion');
+                deleteRow(response.locid)
+            },
+            error: function(response) {
+
+            }
+        })
+    }
+</script>
+
+<script>
+    var csrftoken = getCookie('csrftoken');
+
+    function followlocation() {
+        var places = placesInfo;
+        if (places.length > 1) {
+            alert("Please select 1 location at max.")
+            return;
+        }
+        var title = [];
+        var lat = [];
+        var long = [];
+        places.forEach(function(place) {
+            title.push(place.name);
+            lat.push(place.geometry.location.lat());
+            long.push(place.geometry.location.lng());
+        });
+        var locations = {
+            'title': title,
+            'long': long,
+            'lat': lat
+        };
+        $.ajax({
+            type: "POST",
+            url: '/TweetUtils/addlocation/',
+            dataType: "json",
+            async: false,
+            data: {
+                locations: locations
+            },
+            success: function(response) {
+                console.log('successfull ajax call of add location');
+                if (response.inlist !== undefined && response.inlist) {
+                    alert(response.message)
+                } else if (response.inlist !== undefined && !response.inlist) {
+                    $('#locationtable tbody').append(
+                        "<tr id=\'" + response.loc.id + "\'><td>" + response.loc.city + "</td><td>" + response.loc.country + "</td> <td><button onclick=deletecity('" + response.loc.id + "') type=\'button\' class=\'btn btn-primary\'>Delete City</button></td></tr>"
+                    )
+                }
+            },
+            error: function(response) {
+
+            }
+        })
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAn9PRVj-oDZ8VhriUYrBuS9YR7sJ9Fa1Q&libraries=places&callback=initAutocomplete" async defer></script>
+<script src="{% static 'js/mapApiSettings.js' %}"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#locationtable').DataTable({
+            "order": [
+                [3, "desc"]
+            ]
+        });
+    });
+</script>
+
+<!-- end scripts block -->
+{% endblock scripts %}
