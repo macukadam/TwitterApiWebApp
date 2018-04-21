@@ -4,7 +4,7 @@ from sklearn import svm
 import math
 import pathlib
 
-this_dir = pathlib.Path().resolve() / "svm_resources" / "collection.xlsx"
+this_dir = pathlib.Path().resolve() / "scripts" / "collection.xlsx"
 
 def index_containing_substring(the_list, substring):
     the_list = [item.lower() for item in the_list]
@@ -16,7 +16,7 @@ def index_containing_substring(the_list, substring):
 try:
     earthquakes = pd.read_excel(this_dir)
 except FileNotFoundError:
-    this_dir = pathlib.Path().resolve() / "TweetUtils" / "svm_resources" / "collection.xlsx"
+    this_dir = pathlib.Path().resolve() / "TweetUtils" / "scripts" / "collection.xlsx"
     earthquakes = pd.read_excel(this_dir)
 
 length_position = earthquakes[['httpsOrAtSy','length','position']].as_matrix()

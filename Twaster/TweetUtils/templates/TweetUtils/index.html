@@ -16,8 +16,8 @@
 
 <div class="row" style="min-height: 100px">
     <div class=" col-md-2 col-md-offset-5 ">
-        <h1><img style="width:60px " src="{% static 'img/twaster.png' %} " alt=" ">waster</h1>
-        <p style="font-family:fantasy ">Detecting disasters since 2018</p>
+        <h1 style="margin-left:60px"><img style="width:60px " src="{% static 'img/twaster.png' %} " alt=" ">waster</h1>
+        <p style="font-family:fantasy ">Detecting earthquakes from twitter since 2018</p>
     </div>
 </div>
 <div class="container" style="min-height: 658px">
@@ -25,51 +25,30 @@
         <thead>
             <tr>
                 <th>Record No</th>
-                <th>Location</th>
+                <th>Lity</th>
+                <th>Country</th>
                 <th>Detection Time</th>
-                <th>Actual Time</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td>1</td>
-                <td>Tokyo</td>
-                <td>22:09 01.01.2018</td>
-                <td>22:10 01.01.2018</td>
+                {% for eq in disaster %}
+                <td>{{forloop.counter}}</td>
+                <td>{{eq.Location__City}}</td>
+                <td>{{eq.Location__Country}}</td>
+                <td>{{eq.Recod_time}} {{eq.Record_date}}</td>
             </tr>
-            <tr>
-                <td>2</td>
-                <td>Istanbul</td>
-                <td>22:09 01.01.2018</td>
-                <td>22:10 01.01.2018</td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>Istanbul</td>
-                <td>22:09 01.01.2018</td>
-                <td>22:10 01.01.2018</td>
-            </tr>
-            <tr>
-                <td>4</td>
-                <td>Istanbul</td>
-                <td>22:09 01.01.2018</td>
-                <td>22:10 01.01.2018</td>
-            </tr>
-            <tr>
-                <td>5</td>
-                <td>Istanbul</td>
-                <td>22:09 01.01.2018</td>
-                <td>22:10 01.01.2018</td>
-            </tr>
-            <tr>
-                <td>6</td>
-                <td>Istanbul</td>
-                <td>22:09 01.01.2018</td>
-                <td>22:10 01.01.2018</td>
-            </tr>
-
+            {% endfor %}
             </tfoot>
+
     </table>
+    {% if user.is_authenticated %}
+    <div style="margin-top:20px" class="col-md-12 text-center">
+        <a href="/TweetUtils/detail" style="height:50px; width:250px" onclick="" type="button" class="btn btn-primary">
+            <h4>User details</h4>
+        </a>
+    </div>
+    {% endif %}
 </div>
 
 <!-- body block end  -->

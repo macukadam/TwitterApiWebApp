@@ -1,11 +1,11 @@
 from django.shortcuts import render
-from .models import Disaster_Type, User_Location, Location
+from .models import Disaster_Type, User_Location, Location, Disaster_Record
 from django.http import Http404, HttpResponse, JsonResponse
 from django.core.validators import validate_email
 from django import forms
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from . import tweets
+#from . import tweets
 from django.db.models import Func, F
 from django.contrib.auth.decorators import login_required
 from django.core.mail import EmailMessage
@@ -18,7 +18,8 @@ def get_or_none(classmodel, **kwargs):
         return None
 
 def index(request):
-    return render(request, 'TweetUtils/index.html')
+    disaster = Disaster_Record.objects.all().values("Location__City","Location__Country","Record_date","Recod_time","id").order_by("-id")
+    return render(request, 'TweetUtils/index.html',{'disaster':disaster})
 
 def sendmail(request):
     email = EmailMessage('title', 'body', to=['twasterapp@gmail.com'])
