@@ -38,7 +38,7 @@ class MyStreamListener(tweepy.StreamListener):
             isEq = svm.eq_or_not(status['text'])
             if isEq == "It is eq":
                 tweetcount += 1
-                with sqlite3.connect('/Users/BigMac/Desktop/t/termproject/Twaster/db.sqlite3') as conn:
+                with sqlite3.connect('/home/macukadam/Twaster/db.sqlite3') as conn:
                     c = conn.cursor()
                     created_at = status['created_at']
                     username = status['user']['screen_name']

@@ -77,7 +77,7 @@ def location_predicter(latitude, longitude,created_at):
     global locations
     global start
     global threadstart
-    with sqlite3.connect('/Users/BigMac/Desktop/t/termproject/Twaster/db.sqlite3') as conn:
+    with sqlite3.connect('/home/macukadam/Twaster/db.sqlite3') as conn:
         c = conn.cursor()
         conn.create_function("sign", 4, _sign)
         sqlcomand = "select City,Country,id from TweetUtils_location Where sign(Latitude,Longitude,{0},{1}) = (select MIN(sign(Latitude,Longitude,{0},{1})) from TweetUtils_location)".format(latitude,longitude)
@@ -111,7 +111,7 @@ def location_predicter(latitude, longitude,created_at):
                     user_locs = User_Location.objects.filter(Location_id=row[2]).values('User_id')
                     users = User.objects.filter(id__in=user_locs)
                     for usr in users:
-                        es.sendmail(usr.email,"New York")
+                        es.sendmail(usr.email,countlist[0][1])
 
                     t = Timer(600.0, refresh)
                     t.start()
