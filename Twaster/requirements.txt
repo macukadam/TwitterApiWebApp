@@ -18,7 +18,7 @@
 # TweetUtils/urls.py: 3,4,5
 # TweetUtils/views.py: 9,10,11
 # manage.py: 8
-Django == 2.0.2
+Django == 2.0.12
 
 # TweetUtils/middleware.py: 3
 djangorestframework_jwt == 1.11.0
