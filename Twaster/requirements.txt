@@ -27,7 +27,7 @@ djangorestframework_jwt == 1.11.0
 googlemaps == 2.5.1
 
 # TweetUtils/scripts/svm.py: 2
-numpy == 1.13.1
+numpy == 1.22.0
 
 # TweetUtils/scripts/svm.py: 1
 pandas == 0.20.3
